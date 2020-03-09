@@ -54,13 +54,13 @@ class HashTable:
         index = self._hash_mod(value)
         # make a Linked Pair obj of (key, value)
         element = LinkedPair(key, value)
-        # if full
-            # TODO: double size
-            # for now, raise error
-            print('ERROR: Hashtable is full!')
 
-        # insert (key,value) at hash index
-        self.storage[index] = element
+        # if there already is an element in that index
+        if self.storage[index] is not None:
+            # value at index will point to new element
+            self.storage[index].next = element
+        else:
+            self.storage[index] = element
 
     def remove(self, key):
         '''
@@ -70,7 +70,18 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # if key not found, print warning
+        if key not in self.storage:
+            print("ERROR: key not in table")
+            return
+        # if key is found
+        else:
+            # if there is a connected node, element becomes next
+            if self.storage[key].next:
+                self.storage[key] = self.storage[key].next
+            # else just change it back to None
+            else:
+                self.storage[key] = None
 
     def retrieve(self, key):
         '''
@@ -80,7 +91,9 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # hash key to find index
+        
+        return self.storage[key].value
 
     def resize(self):
         '''
@@ -98,7 +111,6 @@ if __name__ == "__main__":
     ht.insert("line_1", "Tiny hash table")
     ht.insert("line_2", "Filled beyond capacity")
     ht.insert("line_3", "Linked list saves the day!")
-    print([val.value for val in ht.storage])
 
     print("")
 
