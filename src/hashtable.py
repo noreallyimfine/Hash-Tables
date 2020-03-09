@@ -128,7 +128,7 @@ class HashTable:
                 new_storage[new_hash] = new_lp
             # if more than one
             else:
-                while k.next:
+                while k:
                     # temp store next element
                     nxt = k.next
                     # move current element to new storage
