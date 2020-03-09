@@ -115,7 +115,29 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # new storage list double length of original capacity
+        self.capacity *= 2
+        new_storage = [None] * self.capacity
+        # for item in storage
+        for k in self.storage:
+            # if one item in index
+            if not k.next:
+                # move item to new storage
+                new_hash = self._hash_mod(k.key)
+                new_lp = LinkedPair(k.key, k.value)
+                new_storage[new_hash] = new_lp
+            # if more than one
+            else:
+                while k.next:
+                    # temp store next element
+                    nxt = k.next
+                    # move current element to new storage
+                    new_hash = self._hash_mod(k.key)
+                    new_lp = LinkedPair(k.key, k.value)
+                    new_storage[new_hash] = new_lp
+                    # repeat until no next
+                    k = nxt
+        self.storage = new_storage
 
 
 if __name__ == "__main__":
