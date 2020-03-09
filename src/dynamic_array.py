@@ -26,6 +26,9 @@ class DynamicArray:
         self.storage[index] = value
         self.count += 1
 
+    def append(self, value):
+        self.insert(self.count, value)
+
 
 my_array = DynamicArray(4)
 my_array.insert(0, 1)
