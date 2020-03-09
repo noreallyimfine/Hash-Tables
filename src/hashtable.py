@@ -1,11 +1,14 @@
 # '''
 # Linked List hash table key/value pair
 # '''
+
+
 class LinkedPair:
     def __init__(self, key, value):
         self.key = key
         self.value = value
         self.next = None
+
 
 class HashTable:
     '''
@@ -16,7 +19,6 @@ class HashTable:
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
 
-
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
@@ -24,7 +26,6 @@ class HashTable:
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
         return hash(key)
-
 
     def _hash_djb2(self, key):
         '''
@@ -34,14 +35,12 @@ class HashTable:
         '''
         pass
 
-
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
         '''
         return self._hash(key) % self.capacity
-
 
     def insert(self, key, value):
         '''
@@ -51,9 +50,17 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # hash the value
+        index = self._hash_mod(value)
+        # make a Linked Pair obj of (key, value)
+        element = LinkedPair(key, value)
+        # if full
+            # TODO: double size
+            # for now, raise error
+            print('ERROR: Hashtable is full!')
 
-
+        # insert (key,value) at hash index
+        self.storage[index] = element
 
     def remove(self, key):
         '''
@@ -65,7 +72,6 @@ class HashTable:
         '''
         pass
 
-
     def retrieve(self, key):
         '''
         Retrieve the value stored with the given key.
@@ -75,7 +81,6 @@ class HashTable:
         Fill this in.
         '''
         pass
-
 
     def resize(self):
         '''
@@ -87,13 +92,13 @@ class HashTable:
         pass
 
 
-
 if __name__ == "__main__":
     ht = HashTable(2)
 
     ht.insert("line_1", "Tiny hash table")
     ht.insert("line_2", "Filled beyond capacity")
     ht.insert("line_3", "Linked list saves the day!")
+    print([val.value for val in ht.storage])
 
     print("")
 
