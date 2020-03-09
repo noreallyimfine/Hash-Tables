@@ -28,7 +28,7 @@ class DynamicArray:
         self.insert(self.count, value)
 
     def double_size(self):
-        self.capacity += 2
+        self.capacity *= 2
         new_storage = [None] * self.capacity
         for i in range(self.count):
             new_storage[i] = self.storage[i]
@@ -42,4 +42,5 @@ my_array.insert(0, 2)
 my_array.insert(1, 3)
 my_array.insert(3, 4)
 my_array.insert(0, 5)
+my_array.append(20)
 print(my_array.storage)
