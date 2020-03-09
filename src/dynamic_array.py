@@ -8,9 +8,7 @@ class DynamicArray:
 
         # make sure we open space
         if self.count >= self.capacity:
-            # TODO: Make array dynamically resize
-            print("ERROR: Array is full!")
-            return
+            self.double_size()
 
         # make sure index is in range
         if index > self.count:
@@ -28,6 +26,14 @@ class DynamicArray:
 
     def append(self, value):
         self.insert(self.count, value)
+
+    def double_size(self):
+        self.capacity += 2
+        new_storage = [None] * self.capacity
+        for i in range(self.count):
+            new_storage[i] = self.storage[i]
+
+        self.storage = new_storage
 
 
 my_array = DynamicArray(4)
