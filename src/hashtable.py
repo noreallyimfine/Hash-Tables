@@ -51,7 +51,7 @@ class HashTable:
         Fill this in.
         '''
         # hash the value
-        index = self._hash_mod(value)
+        index = self._hash_mod(key)
         # make a Linked Pair obj of (key, value)
         element = LinkedPair(key, value)
 
@@ -71,17 +71,18 @@ class HashTable:
         Fill this in.
         '''
         # if key not found, print warning
-        if key not in self.storage:
+        hashed_key = self._hash_mod(key)
+        if self.storage[hashed_key] is None:
             print("ERROR: key not in table")
             return
         # if key is found
         else:
             # if there is a connected node, element becomes next
-            if self.storage[key].next:
-                self.storage[key] = self.storage[key].next
+            if self.storage[hashed_key].next:
+                self.storage[hashed_key] = self.storage[hashed_key].next
             # else just change it back to None
             else:
-                self.storage[key] = None
+                self.storage[hashed_key] = None
 
     def retrieve(self, key):
         '''
@@ -92,8 +93,20 @@ class HashTable:
         Fill this in.
         '''
         # hash key to find index
-        
-        return self.storage[key].value
+        hashed_key = self._hash_mod(key)
+        if self.storage[hashed_key] is None:
+            return None
+        # if theres no next element, return the hashed_keys value
+        if self.storage[hashed_key].next is None:
+            return self.storage[hashed_key].value
+        # if there is a next:
+        else:
+            # compare keys until we find the right one
+            current = self.storage[hashed_key]
+            while current.key != key:
+                current = current.next
+            # return value of matching key
+            return current.value
 
     def resize(self):
         '''
