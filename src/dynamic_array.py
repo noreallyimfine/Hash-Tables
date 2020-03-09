@@ -15,7 +15,11 @@ class DynamicArray:
         # make sure index is in range
         if index > self.count:
             print("Error: Index out of range")
+
         # shift everything over to right
+        # Start with the last one move it to the right
+        for i in range(self.count, index, -1):
+            self.storage[i] = self.storage[i-1]
 
         # insert our value
         self.storage[index] = value
