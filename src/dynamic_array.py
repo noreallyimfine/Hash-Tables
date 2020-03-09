@@ -15,6 +15,7 @@ class DynamicArray:
         # make sure index is in range
         if index > self.count:
             print("Error: Index out of range")
+            return
 
         # shift everything over to right
         # Start with the last one move it to the right
@@ -24,3 +25,12 @@ class DynamicArray:
         # insert our value
         self.storage[index] = value
         self.count += 1
+
+
+my_array = DynamicArray(4)
+my_array.insert(0, 1)
+my_array.insert(0, 2)
+my_array.insert(1, 3)
+my_array.insert(3, 4)
+my_array.insert(0, 5)
+print(my_array.storage)
