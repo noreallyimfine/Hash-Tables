@@ -94,6 +94,7 @@ class HashTable:
         '''
         # hash key to find index
         hashed_key = self._hash_mod(key)
+        # if key not found, return None
         if self.storage[hashed_key] is None:
             return None
         # if theres no next element, return the hashed_keys value
