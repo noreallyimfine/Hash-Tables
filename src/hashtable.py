@@ -57,8 +57,17 @@ class HashTable:
 
         # if there already is an element in that index
         if self.storage[index] is not None:
-            # value at index will point to new element
-            self.storage[index].next = element
+            # chain through LL at that index
+            current = self.storage[index]
+            while current.next:
+                # if find key, change element to new value
+                if self.storage[index].key == element.key:
+                    self.storage[index] = element
+                    break
+                else:
+                    current = current.next
+            # if not, add as last element
+
         else:
             self.storage[index] = element
 
@@ -95,16 +104,17 @@ class HashTable:
         # hash key to find index
         hashed_key = self._hash_mod(key)
         # if key not found, return None
-        if self.storage[hashed_key] is None:
+        if not self.storage[hashed_key]:
             return None
         # if theres no next element, return the hashed_keys value
-        if self.storage[hashed_key].next is None:
+        elif self.storage[hashed_key].next is None:
             return self.storage[hashed_key].value
         # if there is a next:
         else:
             # compare keys until we find the right one
             current = self.storage[hashed_key]
             while current.key != key:
+                # print(current)
                 current = current.next
             # return value of matching key
             return current.value
@@ -129,7 +139,7 @@ class HashTable:
                 # insert into storage (key, value)
                 self.insert(k.key, k.value)
             # if there is
-            elif k.next:
+            elif k and k.next:
                 while k:
                     self.insert(k.key, k.value)
                     k = k.next
