@@ -52,22 +52,26 @@ class HashTable:
         '''
         # hash the value
         index = self._hash_mod(key)
+        print(index)
+        print("---------")
         # make a Linked Pair obj of (key, value)
         element = LinkedPair(key, value)
 
         # if there already is an element in that index
         if self.storage[index] is not None:
+            # check if it's that LP
+            if self.storage[index].key == element.key:
+                self.storage[index].value = value
             # chain through LL at that index
             current = self.storage[index]
             while current.next:
                 # if find key, change element to new value
-                if self.storage[index].key == element.key:
-                    self.storage[index] = element
+                if current.key == element.key:
+                    current.value = value
                     break
-                else:
-                    current = current.next
+                current = current.next
             # if not, add as last element
-
+            current.next = element
         else:
             self.storage[index] = element
 
@@ -106,18 +110,18 @@ class HashTable:
         # if key not found, return None
         if not self.storage[hashed_key]:
             return None
-        # if theres no next element, return the hashed_keys value
-        elif self.storage[hashed_key].next is None:
-            return self.storage[hashed_key].value
-        # if there is a next:
+        # if there is an element there
         else:
             # compare keys until we find the right one
             current = self.storage[hashed_key]
-            while current.key != key:
-                # print(current)
-                current = current.next
-            # return value of matching key
-            return current.value
+            while current:
+                # if key matches, return value
+                if current.key == key:
+                    return current.value
+                # else go to next element in ll
+                else:
+                    current = current.next
+            # return the value
 
     def resize(self):
         '''
@@ -128,7 +132,7 @@ class HashTable:
         '''
         # new storage list double length of original capacity
         self.capacity *= 2
-        old_storage = self.storage
+        old_storage = self.storage.copy()
         self.storage = [None] * self.capacity
         # for item in storage
         for k in old_storage:
