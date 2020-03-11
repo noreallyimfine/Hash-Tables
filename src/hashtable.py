@@ -1,11 +1,14 @@
 # '''
 # Linked List hash table key/value pair
 # '''
+
+
 class LinkedPair:
     def __init__(self, key, value):
         self.key = key
         self.value = value
         self.next = None
+
 
 class HashTable:
     '''
@@ -16,7 +19,6 @@ class HashTable:
         self.capacity = capacity  # Number of buckets in the hash table
         self.storage = [None] * capacity
 
-
     def _hash(self, key):
         '''
         Hash an arbitrary key and return an integer.
@@ -24,7 +26,6 @@ class HashTable:
         You may replace the Python hash with DJB2 as a stretch goal.
         '''
         return hash(key)
-
 
     def _hash_djb2(self, key):
         '''
@@ -34,14 +35,12 @@ class HashTable:
         '''
         pass
 
-
     def _hash_mod(self, key):
         '''
         Take an arbitrary key and return a valid integer index
         within the storage capacity of the hash table.
         '''
         return self._hash(key) % self.capacity
-
 
     def insert(self, key, value):
         '''
@@ -51,9 +50,30 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
+        # hash the value
+        index = self._hash_mod(key)
+        print(index)
+        print("---------")
+        # make a Linked Pair obj of (key, value)
+        element = LinkedPair(key, value)
 
-
+        # if there already is an element in that index
+        if self.storage[index] is not None:
+            # check if it's that LP
+            if self.storage[index].key == element.key:
+                self.storage[index].value = value
+            # chain through LL at that index
+            current = self.storage[index]
+            while current.next:
+                # if find key, change element to new value
+                if current.key == element.key:
+                    current.value = value
+                    break
+                current = current.next
+            # if not, add as last element
+            current.next = element
+        else:
+            self.storage[index] = element
 
     def remove(self, key):
         '''
@@ -63,8 +83,19 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
+        # if key not found, print warning
+        hashed_key = self._hash_mod(key)
+        if self.storage[hashed_key] is None:
+            print("ERROR: key not in table")
+            return
+        # if key is found
+        else:
+            # if there is a connected node, element becomes next
+            if self.storage[hashed_key].next:
+                self.storage[hashed_key] = self.storage[hashed_key].next
+            # else just change it back to None
+            else:
+                self.storage[hashed_key] = None
 
     def retrieve(self, key):
         '''
@@ -74,8 +105,23 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
+        # hash key to find index
+        hashed_key = self._hash_mod(key)
+        # if key not found, return None
+        if not self.storage[hashed_key]:
+            return None
+        # if there is an element there
+        else:
+            # compare keys until we find the right one
+            current = self.storage[hashed_key]
+            while current:
+                # if key matches, return value
+                if current.key == key:
+                    return current.value
+                # else go to next element in ll
+                else:
+                    current = current.next
+            # return the value
 
     def resize(self):
         '''
@@ -84,8 +130,23 @@ class HashTable:
 
         Fill this in.
         '''
-        pass
-
+        # new storage list double length of original capacity
+        self.capacity *= 2
+        old_storage = self.storage.copy()
+        self.storage = [None] * self.capacity
+        # for item in storage
+        for k in old_storage:
+            # only one list pointer item is stored
+            # check if there is a next element
+            # if there is no next element
+            if k and not k.next:
+                # insert into storage (key, value)
+                self.insert(k.key, k.value)
+            # if there is
+            elif k and k.next:
+                while k:
+                    self.insert(k.key, k.value)
+                    k = k.next
 
 
 if __name__ == "__main__":
